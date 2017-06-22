@@ -66,7 +66,7 @@ setup(
     },
     entry_points = {
         'console_scripts':[
-            'pytip=pytip.cli:main',
+            'pytip=pytip.cli:main', # tells python to execute the main function in cli.py
         ],
     },
     cmdclass = {'test':RunTests},
