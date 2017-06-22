@@ -6,7 +6,7 @@ from subprocess import call
 
 from setuptools import Command, find_packages, setup
 
-#from pytip import __version__
+from pytip import __version__
 
 # uses README.rst for documentation.
 # Legitimate looking documentation when deploying to PyPI
