@@ -11,6 +11,7 @@ class Dynamic(Base):
         self.tax = 8.75
         self.subtotal = 0.0
         self.party_size = 1
+        self.party = dict()
 
     def set_gratuity(self, custom_gratuity):
         try:
@@ -46,6 +47,24 @@ class Dynamic(Base):
     def calculate_tip(self):
         return (self.gratuity / 100) * self.subtotal
 
+    def collect_names(self):
+        print 'Please enter the names of the party members.'
+        for i in range(self.party_size):
+            name = raw_input(str(i) + ": ")
+            self.party[i] = {'name':name, 'price':0.0}
+
+    def distribute_cost(self):
+        tb_distributed = self.subtotal
+        while tb_distributed != 0:
+            print 'Current Distribution'
+            for k,v in self.party.iteritems():
+                print k + ': ' + v['name'] + ' ; ' + v['price']
+            item_cost = raw_input('Enter an Item Price: ')
+            all_purchased = raw_input('Enter number of all who had this item')
+
+
+
+
     def run(self):
         # print 'You supplied the following options:', dumps(self.options, indent=2, sort_keys=True)
         self.set_subtotal(self.options['<subtotal>'])
@@ -59,6 +78,8 @@ class Dynamic(Base):
             custom_tax = raw_input('Please enter custom tax value: ')
             self.set_tax(custom_tax)
 
+        self.collect_names()
+
         tax_value = self.calculate_tax()
         print 'Tax (' + str(self.tax) + '%): $' + str(tax_value)
         tot_wo_tip = self.subtotal + tax_value
@@ -68,5 +89,6 @@ class Dynamic(Base):
         print 'Tip (' + str(self.gratuity) + '%): $' + str(grat_value)
         tot_wtip = tot_wo_tip + grat_value
         print 'Total (w/ Tip): $' + str(tot_wtip)
+
 
 
