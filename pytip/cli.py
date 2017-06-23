@@ -2,8 +2,8 @@
 pytip
 
 Usage:
-    pytip split [-gt] <party size> <subtotal>
-    pytip dynamic [-gt] <party size> <subtotal>
+    pytip [-gt] split <party_size> <subtotal>
+    pytip [-gt] dynamic <party_size> <subtotal>
     pytip -h | --help
     pytip --version
 
@@ -35,11 +35,14 @@ def main():
 
     # Here we try to dynamically match the command the user is trying to run
     # with a per-defined command class we've already created.
-
+    #print options
     for k, v in options.iteritems():
+        #print k, v
+        #print commands
         if hasattr(commands, k):
+            #print 'has attr!'
             module = getattr(commands, k)
             commands = getmembers(module, isclass)
             command = [command[1] for command in commands if command[0] != 'Base']
-            command = command(options)
+            command = command[0](options)
             command.run()
