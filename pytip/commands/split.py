@@ -60,9 +60,6 @@ class Split(Base):
             custom_tax = raw_input('Please enter custom tax value: ')
             self.set_tax(custom_tax)
 
-
-
-
         tax_value = self.calculate_tax()
         print 'Tax (' + str(self.tax) + '%): $' + str(tax_value)
         tot_wo_tip = self.subtotal + tax_value
