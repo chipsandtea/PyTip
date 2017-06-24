@@ -70,6 +70,7 @@ class Dynamic(Base):
             else:
                 raise TypeError
             if shared_flag:
+                # TODO This item can't cost x amount because it's greater than the current subtotal
                 print 'Enter the number of each person who shared this item.'
                 print 'Enter \'d\' or \'done\' when all have been entered.'
                 keep_going = True
@@ -85,6 +86,7 @@ class Dynamic(Base):
                     self.party[person_id]['price'] += shared_cost
                 tb_distributed -= item_cost
             else:
+                # TODO only so many people can have this item based on remaining subtotal
                 print 'Enter the number of each person who ordered this item.'
                 print 'Enter \'d\' or \'done\' when all have been entered.'
                 keep_going = True
@@ -128,11 +130,12 @@ class Dynamic(Base):
 
         tip_per = grat_value/self.party_size
         tax_per = tax_value/self.party_size
-        print 'Final Distribution'
+
+        print '\n\nFinal Distribution'
         print '=================='
         for person in self.party.values():
             final_per = person['price'] + tip_per + tax_per
-            print person['name'] + ' : $' + str(final_per)
+            print person['name'] + ' : $' + '{0:.2f}'.format(final_per)
 
 
 
