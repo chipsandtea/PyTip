@@ -119,20 +119,20 @@ class Dynamic(Base):
         self.distribute_cost()
 
         tax_value = self.calculate_tax()
-        print 'Tax (' + str(self.tax) + '%): $' + str(tax_value)
+        print '\n\nFinal Distribution'
+        print '=================='
+        print 'Tax (' + str(self.tax) + '%): $' + str('{0:.2f}'.format(tax_value))
         tot_wo_tip = self.subtotal + tax_value
-        print 'Total (w/o Tip): $' + str(tot_wo_tip)
+        print 'Total (w/o Tip): $' + str('{0:.2f}'.format(tot_wo_tip))
 
         grat_value = self.calculate_tip()
-        print 'Tip (' + str(self.gratuity) + '%): $' + str(grat_value)
+        print 'Tip (' + str(self.gratuity) + '%): $' + str('{0:.2f}'.format(grat_value))
         tot_wtip = tot_wo_tip + grat_value
-        print 'Total (w/ Tip): $' + str(tot_wtip)
+        print 'Total (w/ Tip): $' + str('{0:.2f}'.format(tot_wtip))
 
         tip_per = grat_value/self.party_size
         tax_per = tax_value/self.party_size
 
-        print '\n\nFinal Distribution'
-        print '=================='
         for person in self.party.values():
             final_per = person['price'] + tip_per + tax_per
             print person['name'] + ' : $' + '{0:.2f}'.format(final_per)
