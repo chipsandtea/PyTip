@@ -37,12 +37,9 @@ def main():
     # with a per-defined command class we've already created.
     #print options
     for k, v in options.iteritems():
-        #print k, v
-        #print commands
-        if hasattr(commands, k):
-            #print 'has attr!'
+        if hasattr(commands, k) and v:
             module = getattr(commands, k)
             commands = getmembers(module, isclass)
-            command = [command[1] for command in commands if command[0] != 'Base']
-            command = command[0](options)
+            command = [command[1] for command in commands if command[0] != 'Base'][0]
+            command = command(options)
             command.run()

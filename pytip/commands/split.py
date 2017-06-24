@@ -8,6 +8,7 @@ class Split(Base):
     """Split the bill!"""
     def __init__(self, options, *args, **kwargs):
         super(Split, self).__init__(options, *args, **kwargs)
+        #print 'in split'
         self.gratuity = 15.0
         self.tax = 8.75
         self.subtotal = 0.0

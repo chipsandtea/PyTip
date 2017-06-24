@@ -1,12 +1,12 @@
 from json import dumps
 from .base import Base
 
-
 class Dynamic(Base):
     """Dynamically split the bill."""
 
     def __init__(self, options, *args, **kwargs):
         super(Dynamic, self).__init__(options, *args, **kwargs)
+        #print 'in dynamic'
         self.gratuity = 15.0
         self.tax = 8.75
         self.subtotal = 0.0
@@ -50,19 +50,21 @@ class Dynamic(Base):
     def collect_names(self):
         print 'Please enter the names of the party members.'
         for i in range(self.party_size):
-            name = raw_input(str(i) + ": ")
+            name = raw_input("{0}: ".format(str(i + 1)))
             self.party[i] = {'name':name, 'price':0.0}
 
     def distribute_cost(self):
         tb_distributed = self.subtotal
         while tb_distributed != 0:
+            # Check for bel
             print 'Current Distribution'
+            print '===================='
             for k,v in self.party.iteritems():
                 print k + ': ' + v['name'] + ' ; ' + v['price']
             item_cost = raw_input('Enter an Item Price: ')
-            all_purchased = raw_input('Enter number of all who had this item')
-
-
+            all_purchased_raw = raw_input('Enter number of all who had this item')
+            purchased = [person.strip() for person in all_purchased_raw.split(',')]
+            # numbers separated by spaces
 
 
     def run(self):
