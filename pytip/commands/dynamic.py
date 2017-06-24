@@ -56,16 +56,49 @@ class Dynamic(Base):
     def distribute_cost(self):
         tb_distributed = self.subtotal
         while tb_distributed != 0:
-            # Check for bel
+            print'Remaining Subtotal: ' + str(tb_distributed)
             print 'Current Distribution'
             print '===================='
             for k,v in self.party.iteritems():
-                print k + ': ' + v['name'] + ' ; ' + v['price']
-            item_cost = raw_input('Enter an Item Price: ')
-            all_purchased_raw = raw_input('Enter number of all who had this item')
-            purchased = [person.strip() for person in all_purchased_raw.split(',')]
-            # numbers separated by spaces
-
+                print str(k) + ': ' + v['name'] + ' ; ' + str(v['price'])
+            item_cost = float(raw_input('Enter an Item Price: '))
+            shared_flag = raw_input('Was this item shared? (y/n): ').lower()
+            if shared_flag == 'y' or shared_flag == 'yes':
+                shared_flag = True
+            elif shared_flag == 'n' or shared_flag == 'no':
+                shared_flag = False
+            else:
+                raise TypeError
+            if shared_flag:
+                print 'Enter the number of each person who shared this item.'
+                print 'Enter \'d\' or \'done\' when all have been entered.'
+                keep_going = True
+                shared = set()
+                while keep_going and len(shared) < self.party_size:
+                    num = raw_input('#: ')
+                    if num == 'd' or num == 'done':
+                        keep_going = False
+                    elif int(num) in self.party.keys():
+                        shared.add(int(num))
+                shared_cost = item_cost / len(shared)
+                for person_id in shared:
+                    self.party[person_id]['price'] += shared_cost
+                tb_distributed -= item_cost
+            else:
+                print 'Enter the number of each person who ordered this item.'
+                print 'Enter \'d\' or \'done\' when all have been entered.'
+                keep_going = True
+                ordered = set()
+                while keep_going and len(ordered) < self.party_size:
+                    num = raw_input('#: ')
+                    if num == 'd' or num == 'done':
+                        keep_going = False
+                    elif int(num) in self.party.keys():
+                        ordered.add(int(num))
+                ordered_cost = item_cost * len(ordered)
+                for person_id in ordered:
+                    self.party[person_id]['price'] += item_cost
+                tb_distributed -= ordered_cost
 
     def run(self):
         # print 'You supplied the following options:', dumps(self.options, indent=2, sort_keys=True)
@@ -81,6 +114,7 @@ class Dynamic(Base):
             self.set_tax(custom_tax)
 
         self.collect_names()
+        self.distribute_cost()
 
         tax_value = self.calculate_tax()
         print 'Tax (' + str(self.tax) + '%): $' + str(tax_value)
@@ -91,6 +125,14 @@ class Dynamic(Base):
         print 'Tip (' + str(self.gratuity) + '%): $' + str(grat_value)
         tot_wtip = tot_wo_tip + grat_value
         print 'Total (w/ Tip): $' + str(tot_wtip)
+
+        tip_per = grat_value/self.party_size
+        tax_per = tax_value/self.party_size
+        print 'Final Distribution'
+        print '=================='
+        for person in self.party:
+            final_per = person['price'] + tip_per + tax_per
+            print person['name'] + ' : $' + str(final_per)
 
 
 
