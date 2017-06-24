@@ -130,7 +130,7 @@ class Dynamic(Base):
         tax_per = tax_value/self.party_size
         print 'Final Distribution'
         print '=================='
-        for person in self.party:
+        for person in self.party.values():
             final_per = person['price'] + tip_per + tax_per
             print person['name'] + ' : $' + str(final_per)
 
